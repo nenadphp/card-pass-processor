@@ -34,10 +34,10 @@ class isObjectValidMiddleware
     {
         if(!$this->objectModel->isObjectValid($request->get('object_uuid'))) {
             logger(
-                sprintf('Invalid object passed, Object ID: %s', $request->get('object_uuid'))
+                sprintf('Invalid object uuid passed, OBJECT UUID: %s', $request->get('object_uuid'))
             );
 
-            return \response('Object forbidden', 403);
+            return \response('Invalid object', 403);
         }
 
         return $next($request);

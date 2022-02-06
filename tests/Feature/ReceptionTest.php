@@ -59,7 +59,7 @@ class ReceptionTest extends TestCase
         ]);
 
         $response = $this->get("/api/reception?object_uuid={$object->object_uuid}&card_uuid={$card->card_uuid}");
-        $response->assertSeeText('Card forbidden');
+        $response->assertSeeText('Invalid card');
         $response->assertStatus(403);
         Card::destroy($card->id);
     }
@@ -77,7 +77,7 @@ class ReceptionTest extends TestCase
         ]);
 
         $response = $this->get("/api/reception?object_uuid={$object->object_uuid}&card_uuid={$card->card_uuid}");
-        $response->assertSeeText('Object forbidden');
+        $response->assertSeeText('Invalid object');
         $response->assertStatus(403);
         ObjectModel::destroy($object->id);
     }

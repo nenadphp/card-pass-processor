@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CardProcessRequest;
+use App\Http\Requests\CardProcessorRequest;
 use App\Services\Interfaces\CardProcessorInterface;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\ResponseFactory;
@@ -12,19 +13,25 @@ use Illuminate\Http\Response;
 class ReceptionController extends Controller
 {
     /**
-     * @param CardProcessRequest $request
+     * @param CardProcessorRequest $request
      * @param CardProcessorInterface $cardProcessor
      * @return Application|ResponseFactory|Response
      * @throws Exception
      */
-    public function cardReception(CardProcessRequest $request, CardProcessorInterface $cardProcessor): Response
+    public function cardReception(CardProcessorRequest $request, CardProcessorInterface $cardProcessor): Response
     {
         try {
             $objectUuid = $request->get('object_uuid');
             $cardUuid = $request->get('card_uuid');
 
             if ($cardProcessor->isBooked($objectUuid, $cardUuid)) {
-                return response('Card is already booked for today.', 403);
+                return response(
+                    sprintf('Card uuid: %s is already booked for date :%s. Aborting....',
+                        $cardUuid,
+                        Carbon::today()->toString()
+                    ),
+                    403
+                );
             }
 
             return response([

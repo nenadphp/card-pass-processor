@@ -34,10 +34,10 @@ class isCardValidMiddleware
     {
         if(!$this->cardModel->isCardValid($request->get('card_uuid'))) {
             logger(
-                sprintf('Invalid card passed, CARD ID: %s', $request->get('card_uuid'))
+                sprintf('Invalid card uuid passed, CARD UUID: %s', $request->get('card_uuid'))
             );
 
-            return \response('Card forbidden', 403);
+            return \response('Invalid card', 403);
         }
 
         return $next($request);
